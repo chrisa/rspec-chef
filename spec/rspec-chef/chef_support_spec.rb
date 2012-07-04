@@ -6,12 +6,12 @@ end
 
 describe RSpecChefSupport do
   it "returns the default recipe if we only provide the cookbook name" do
-    recipe = subject.lookup_recipe('foo', COOKBOOKS, {})
+    recipe = subject.lookup_recipe('foo', COOKBOOKS, {:platform => 'testing'})
     recipe.recipe_name.should == 'default'
   end
 
   it "returns the specific recipe if we provide its name" do
-    recipe = subject.lookup_recipe('foo::install', COOKBOOKS, {:path => 'foo'})
+    recipe = subject.lookup_recipe('foo::install', COOKBOOKS, {:path => 'foo', :platform => 'testing'})
     recipe.recipe_name.should == 'install'
   end
 end
