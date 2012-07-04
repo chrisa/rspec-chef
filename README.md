@@ -24,8 +24,12 @@ library
   +-- specs
         |
         +-- recipes
+        |     |
+        |     +-- <recipe_name>_spec.rb
+        |
+        +-- providers
               |
-              +-- <recipe_name>_spec.rb
+              +-- <lwrp_name>_spec.rb
 ```
 
 Or force the example group into the spec:
@@ -33,6 +37,15 @@ Or force the example group into the spec:
 ```ruby
 
 describe 'cookbook::recipe', :type => :recipe do
+  ...
+end
+```
+
+or, for an LWRP test:
+
+```ruby
+
+describe 'cookbook_provider', :type => :provider do
   ...
 end
 ```
@@ -111,6 +124,17 @@ RSpec.configure do |c|
 end
 ```
 
+where it can also be set as an array of paths, which will be searched in turn:
+
+```ruby
+RSpec.configure do |c|
+  c.cookbook_path = [
+    File.expand_path('../site-cookbooks', __FILE__),
+    File.expand_path('../cookbooks', __FILE__)
+  ]
+end
+```
+
 *JSON attributes*
 
 Each recipe includes a node. This node can be feeded with a hash using `let` in the description group:
@@ -137,10 +161,30 @@ describe 'foo::bar' do
 end
 ```
 
-The JSON attributes can alson be set as a global RSpec setting:
+The JSON attributes can also be set as a global RSpec setting:
 
 ```ruby
 RSpec.configure do |c|
   c.json_attributes = {:foo => :bar}
+end
+```
+
+Default attributes may also be specified, to which the json_attributes will be added:
+
+```ruby
+RSpec.configure do |c|
+  c.default_attributes = {:foo => :bar}
+end
+```
+
+*LWRP Resource Specification*
+
+When testing LWRP providers, the corresponding resource may be defined using let:
+
+```ruby
+describe 'foo::bar' do
+  let(:resource) {
+    { :foo => 'bar' }
+  }
 end
 ```
