@@ -22,8 +22,9 @@ module RSpec
           lookup = @type
           lookup << "[#{@name.to_s}]" if @name
 
+          resource_collection = recipe.run_context.resource_collection
           begin
-            resource = recipe.resources(lookup)
+            resource = resource_collection.find(lookup)
           rescue ::Chef::Exceptions::ResourceNotFound
           end
           return false unless resource

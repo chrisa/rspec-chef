@@ -14,13 +14,29 @@ class MockResource
   end
 end
 
-class MockRecipe
+class MockResourceCollection
   def initialize(resources = {})
     @resources = resources
   end
 
-  def resources(name)
+  def find(name)
     @resources[name]
+  end
+end
+
+class MockRunContext
+  attr_reader :resource_collection
+
+  def initialize(resources = {})
+    @resource_collection = MockResourceCollection.new(resources)
+  end
+end
+
+class MockRecipe
+   attr_reader :run_context
+
+  def initialize(resources = {})
+    @run_context = MockRunContext.new(resources)
   end
 end
 
